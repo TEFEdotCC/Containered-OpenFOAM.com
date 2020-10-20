@@ -7,12 +7,12 @@ An OpenFOAM image which is mainly designed to execute openfoam jobs.
 Executing an OpenFOAM case from the current directory:
 ```bash
 cd path/to/case/dir
-docker container run -it --rm -v $PWD:/data tefe/openfoamplus ./Allrun   
+docker run -it --rm -v $PWD:/data tefe/openfoamplus ./Allrun   
 ```
 
 Get a bash with all containg OpenFOAM commands:
 ```bash
-docker container run -it --rm -v $PWD:/data tefe/openfoamplus bash    
+docker run -it --rm -v $PWD:/data tefe/openfoamplus bash    
 ```
 
 **Notice**

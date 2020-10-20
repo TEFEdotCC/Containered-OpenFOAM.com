@@ -6,4 +6,4 @@
 # Set defaults for build arguments 
 [ -n "$SOURCE_TYPE" ]        || SOURCE_TYPE=git
 [ -n "$DOCKERFILE_PATH" ]    || DOCKERFILE_PATH=.
-[ -n "$IMAGE_NAME" ]         || IMAGE_NAME=tefe/openfoamplus:${SOURCE_BRANCH}
+[ -n "$IMAGE_NAME" ]         || IMAGE_NAME=tefe/openfoamplus:v2006

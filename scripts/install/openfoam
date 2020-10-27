@@ -16,7 +16,7 @@ export preCICE_VERSION=2.1.0
 
 # ------------------------------------------------------------------------------
 #
-export OPENFOAM_DIR="/opt/OpenFOAM/OpenFOAM-${OPENFOAM_VERSION}"
+export OPENFOAM_DIR="/opt/openfoam"
 export OPENFOAM_THIRDPARTY_DIR="$OPENFOAM_DIR/ThirdParty"
 
 # ------------------------------------------------------------------------------

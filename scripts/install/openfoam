@@ -44,7 +44,7 @@ export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
 export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION}"
 
 export preCICE_BUILD_DIR='/opt/preCICE'
-export PRECICE_ROOT="${OPENFOAM_THIRDPARTY_DIR}/precice-${preCICE_VERSION}"
+export PRECICE_ROOT="${preCICE_BUILD_DIR}/precice-${preCICE_VERSION}"
 
 # ------------------------------------------------------------------------------
 # load sources

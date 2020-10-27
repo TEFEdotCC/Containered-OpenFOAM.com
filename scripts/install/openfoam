@@ -3,13 +3,11 @@
 export WM_NCOMPPROCS=$(grep -c ^processor /proc/cpuinfo)
 
 #
-export OPENFOAM_VERSION=v2006
-
 export ADIOS2_VERSION_MAJOR=2
 export ADIOS2_VERSION_MINOR=4
 export ADIOS2_VERSION_SUFFIX=0
 export ADIOS2_VERSION="${ADIOS2_VERSION_MAJOR}.${ADIOS2_VERSION_MINOR}.${ADIOS2_VERSION_SUFFIX}"
-export FTW_VERSION=3.3.7
+export FFTW_VERSION=3.3.7
 export PETSC_VERSION=3.13.2
 export SCOTCH_VERSION=6.0.9
 export KAHIP_VERSION=2.12
@@ -18,19 +16,8 @@ export preCICE_VERSION=2.1.0
 
 # ------------------------------------------------------------------------------
 #
-export OPENFOAM_GIT_URL="https://develop.openfoam.com/Development/openfoam.git"
-export OPENFOAM_THIRDPARTY_GIT_URL="https://develop.openfoam.com/Development/ThirdParty-common.git"
-
 export OPENFOAM_DIR="/opt/OpenFOAM/OpenFOAM-${OPENFOAM_VERSION}"
 export OPENFOAM_THIRDPARTY_DIR="$OPENFOAM_DIR/ThirdParty"
-
-if [ $(git ls-remote --heads $OPENFOAM_GIT_URL "maintenance-$OPENFOAM_VERSION" | wc -l) -eq 1 ]
-then
-  export OPENFOAM_GIT_BRANCH="maintenance-$OPENFOAM_VERSION"
-else
-  export OPENFOAM_GIT_BRANCH="OpenFOAM-$OPENFOAM_VERSION"
-fi
-export OPENFOAM_THIRDPARTY_GIT_BRANCH=$OPENFOAM_VERSION
 
 # ------------------------------------------------------------------------------
 #
@@ -42,13 +29,11 @@ export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
 #export FFTW_GIT_BRANCH="0"
 #export FFTW_DIR="${OPENFOAM_THIRDPARTY_DIR}/fftw-${FFTW_VERSION}"
 
-#export PETSC_GIT_URL="https://gitlab.com/petsc/petsc.git"
-#export PETSC_GIT_BRANCH="v${PETSC_VERSION}"
+export PETSC_GIT_URL="https://gitlab.com/petsc/petsc.git"
+export PETSC_GIT_BRANCH="v${PETSC_VERSION}"
 #export PETSC_DIR="${OPENFOAM_THIRDPARTY_DIR}/petsc_${PETSC_VERSION}"
-export PETSC_DIR=/usr/lib64/petsc
-export PETSC_ARCH=linux-gnu
-export PETSC_INCLUDES=/usr/include/petsc
-export PETSC_LIBRARIES=/usr/lib64/petsc
+#export PETSC_DIR=${OPENFOAM_THIRDPARTY_DIR}/petsc-${PETSC_VERSION}
+#export PETSC_ARCH=linux-gnu
 
 #export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
 #export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION}"
@@ -59,7 +44,7 @@ export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
 export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION}"
 
 export preCICE_BUILD_DIR='/opt/preCICE'
-export PRECICE_ROOT="${preCICE_BUILD_DIR}/precice-${preCICE_VERSION}"
+export PRECICE_ROOT="${OPENFOAM_THIRDPARTY_DIR}/precice-${preCICE_VERSION}"
 
 # ------------------------------------------------------------------------------
 # load sources
@@ -84,6 +69,13 @@ git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
 #wget -q http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz
 #tar -xzvf petsc-lite-${PETSC_VERSION}.tar.gz
 #rm -f petsc-lite-${PETSC_VERSION}.tar.gz
+
+#echo "export PETSC_DIR=${PETSC_DIR}" >> /etc/profile.d/PETSc.sh
+#echo "export PETSC_ARCH=${PETSC_ARCH}" >> /etc/profile.d/PETSc.sh
+#chmod +x /etc/profile.d/PETSc.sh
+#
+#cd ${PETSC_DIR}
+#python setup.py install
 
 # put fftw to third party
 #cd ${OPENFOAM_THIRDPARTY_DIR}
@@ -126,7 +118,7 @@ chmod +x /etc/profile.d/preCICE.sh
 cmake                                                                           \
   -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release                             \
   -DPRECICE_MPICommunication=ON                                                 \
-  -DMPI_CXX_COMPILER=/usr/lib64/openmpi/bin/mpic++                              \
+  -DMPI_CXX_COMPILER=/usr/lib64/openmpi/bin/mpicxx                              \
   -DMPI_C_COMPILER=/usr/lib64/openmpi/bin/mpicc                                 \
   -DMPI_Fortran_COMPILER=/usr/lib64/openmpi/bin/mpifort                         \
   -DPRECICE_PETScMapping=off                                                    \

@@ -6,6 +6,12 @@ ARG SOURCE_COMMIT
 ARG DOCKERFILE_PATH
 ARG SOURCE_TYPE
 
+ARG OPENFOAM_GIT_URL
+ARG OPENFOAM_VERSION
+ARG OPENFOAM_THIRDPARTY_GIT_URL
+ARG OPENFOAM_GIT_BRANCH
+ARG OPENFOAM_THIRDPARTY_GIT_BRANCH
+
 # install software
 RUN dnf update -y && dnf upgrade -y                                                         \
  && dnf group install -y "Development Tools"                                                \
@@ -20,11 +26,13 @@ RUN dnf update -y && dnf upgrade -y                                             
       libjpeg libpng hdf5-devel zeromq blosc bzip2 zfp grads libfabric                      \
       openmpi-devel openmpi readline-devel                                                  \
       python python3 python3-pip                                                            \
+      boost-openmpi-python3-devel boost-python3-devel python3-devel                         \
       python3-numpy python3-scipy python3-matplotlib python3-pandas python3-sympy           \
       CGAL-devel fftw-devel                                                                 \
       eigen3-devel libxml2-devel                                                            \
       scons valgrind-devel blas-devel openblas-devel gcc-gfortran                           \
-      metis-devel scotch-devel petsc petsc-devel                                            \
+      metis-devel scotch-devel                                                              \
+      petsc petsc-devel petsc-openmpi petsc-openmpi-devel                                   \
  && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*
 
 ENV TZ=Europe/Berlin

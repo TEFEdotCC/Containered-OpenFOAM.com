@@ -2,17 +2,21 @@
 
 An OpenFOAM image which is mainly designed to execute openfoam jobs.
 
+# Build
+
+Execute the script `hooks/build`.
+
 # Usage
 
 Executing an OpenFOAM case from the current directory:
 ```bash
 cd path/to/case/dir
-docker run -it --rm -v $PWD:/data tefe/openfoamplus:v2006 ./Allrun   
+docker run -it --rm -v $PWD:/data tefe/openfoam.com:latest ./Allrun   
 ```
 
 Get a bash with all containg OpenFOAM commands:
 ```bash
-docker run -it --rm -v $PWD:/data tefe/openfoamplus:v2006 bash    
+docker run -it --rm -v $PWD:/data tefe/openfoam.com:latest bash    
 ```
 
 **Notice**

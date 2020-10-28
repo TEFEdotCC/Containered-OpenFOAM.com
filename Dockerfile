@@ -55,7 +55,7 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime                     
 
 # setup path's
 RUN echo 'export PATH=$PATH:/usr/lib64/openmpi/bin' >> /etc/profile.d/openfoam.sh           \
- && echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64:/usr/lib64/openmpi/lib' >> /etc/profile.d/openfoam.sh \
+ && echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64:/usr/local/lib64:/usr/lib64/openmpi/lib' >> /etc/profile.d/openfoam.sh \
  && echo 'export OMPI_MCA_btl_vader_single_copy_mechanism=none' >> /etc/profile.d/openfoam.sh \
  && echo 'export WM_NCOMPPROCS=$(grep -c ^processor /proc/cpuinfo)' >> /etc/profile.d/openfoam.sh \
  && chmod +x /etc/profile.d/openfoam.sh

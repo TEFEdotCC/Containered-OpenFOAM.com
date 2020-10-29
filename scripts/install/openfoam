@@ -87,7 +87,7 @@ git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
 # build openfoam
 
 # ensure label size of 64 bit
-sed -ie  's|WM_LABEL_SIZE=32|WM_LABEL_SIZE=64|' ${OPENFOAM_DIR}/etc/bashrc
+#sed -ie  's|WM_LABEL_SIZE=32|WM_LABEL_SIZE=64|' ${OPENFOAM_DIR}/etc/bashrc
 
 # config env
 . /etc/profile.d/openfoam.sh || echo "skip errors."

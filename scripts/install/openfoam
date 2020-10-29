@@ -35,9 +35,9 @@ export PETSC_GIT_BRANCH="v${PETSC_VERSION}"
 #export PETSC_DIR=${OPENFOAM_THIRDPARTY_DIR}/petsc-${PETSC_VERSION}
 #export PETSC_ARCH=linux-gnu
 
-#export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
-#export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION}"
-#export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/scotch_${SCOTCH_VERSION}"
+export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
+export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION}"
+export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/scotch_${SCOTCH_VERSION}"
 
 export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
 export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
@@ -58,7 +58,7 @@ echo ". $OPENFOAM_DIR/etc/bashrc" >> /etc/profile.d/openfoam.sh
 
 #
 git clone --branch ${ADIOS2_GIT_BRANCH} ${ADIOS2_GIT_URL} ${ADIOS2_DIR}
-#git clone --branch ${SCOTCH_GIT_BRANCH} ${SCOTCH_GIT_URL} ${SCOTCH_DIR}
+git clone --branch ${SCOTCH_GIT_BRANCH} ${SCOTCH_GIT_URL} ${SCOTCH_DIR}
 #git clone --branch ${PETSC_GIT_BRANCH}  ${PETSC_GIT_URL}  ${PETSC_DIR}
 
 # KaHIP
@@ -97,7 +97,7 @@ cd ${OPENFOAM_THIRDPARTY_DIR}
 ./makeAdios2
 ./makeKAHIP
 #./makePETSC
-#./makeSCOTCH
+./makeSCOTCH
 #./makeFFTW
 
 #

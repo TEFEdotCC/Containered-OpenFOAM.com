@@ -27,6 +27,7 @@ export OPENFOAM_DIR="/opt/openfoam"
 export OPENFOAM_THIRDPARTY_DIR="$OPENFOAM_DIR/ThirdParty"
 
 echo "export OPENFOAM_DIR=${OPENFOAM_DIR}" >> /etc/profile.d/buildenv.sh
+echo "export OPENFOAM_THIRDPARTY_DIR=${OPENFOAM_THIRDPARTY_DIR}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 #
@@ -118,7 +119,7 @@ cd ${OPENFOAM_THIRDPARTY_DIR}
 ./makeAdios2
 ./makeKAHIP
 #./makePETSC
-./makeSCOTCH
+./makeSCOTCH ${SCOTCH_DIR}
 #./makeFFTW
 
 #
@@ -145,10 +146,10 @@ sed -ie 's|${FOAM_USER_LIBBIN}|${FOAM_EXT_LIBBIN}|' Allwmake
 # ------------------------------------------------------------------------------
 
 # cleanup openfoam
-#cd ${OPENFOAM_THIRDPARTY_DIR}
+cd ${OPENFOAM_THIRDPARTY_DIR}
+./Allclean
+cd ${OPENFOAM_DIR}
 #./Allclean
-#cd ${OPENFOAM_DIR}
-#./Allclean
-#find -name '*.o' | xargs rm
-#find -name '*.dep' | xargs rm
-#rm -rf build/*
+find -name '*.o' | xargs rm
+find -name '*.dep' | xargs rm
+rm -rf build/*

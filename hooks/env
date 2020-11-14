@@ -10,13 +10,13 @@ export OPENFOAM_GIT_URL="https://develop.openfoam.com/Development/openfoam.git"
 export OPENFOAM_THIRDPARTY_GIT_URL="https://develop.openfoam.com/Development/ThirdParty-common.git"
 export OPENFOAM_VERSION="$SOURCE_BRANCH"
 export IMAGE_VERSION="$OPENFOAM_VERSION"
+export OPENFOAM_GIT_BRANCH="$OPENFOAM_VERSION"
+export OPENFOAM_THIRDPARTY_GIT_BRANCH="develop"
 
 if [ "$OPENFOAM_VERSION" = "develop" ]; then
   #
   # branch : develop
   #   mostly stable branch for next release.
-  export OPENFOAM_GIT_BRANCH="develop"
-  export OPENFOAM_THIRDPARTY_GIT_BRANCH="develop"
   export IMAGE_VERSION="dev"
 
 elif [ $(git ls-remote --heads $OPENFOAM_GIT_URL "maintenance-$OPENFOAM_VERSION" | wc -l) -eq 1 ]; then
@@ -26,13 +26,16 @@ elif [ $(git ls-remote --heads $OPENFOAM_GIT_URL "maintenance-$OPENFOAM_VERSION"
   export OPENFOAM_GIT_BRANCH="maintenance-$OPENFOAM_VERSION"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="$OPENFOAM_VERSION"
 
-else
+elif [ "$OPENFOAM_VERSION" = "master" ]; then
   #
   # branch : master
   #   last releases with bug fixes, should be mostly stable
-  export OPENFOAM_GIT_BRANCH="master"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="main"
   export IMAGE_VERSION="latest"
+
+else
+  echo "FATAL: OpenFOAM version detection error."
+  exit -1
 fi
 
 #

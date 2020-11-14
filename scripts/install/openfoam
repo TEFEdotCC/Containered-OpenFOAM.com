@@ -34,6 +34,10 @@ export ADIOS2_GIT_URL="https://github.com/ornladios/ADIOS2.git"
 export ADIOS2_GIT_BRANCH="release_${ADIOS2_VERSION_MAJOR}${ADIOS2_VERSION_MINOR}"
 export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
 
+echo "export ADIOS2_GIT_URL=${ADIOS2_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export ADIOS2_GIT_BRANCH=${ADIOS2_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_DIR=${ADIOS2_DIR}" >> /etc/profile.d/buildenv.sh
+
 #export FFTW_GIT_URL="0"
 #export FFTW_GIT_BRANCH="0"
 #export FFTW_DIR="${OPENFOAM_THIRDPARTY_DIR}/fftw-${FFTW_VERSION}"
@@ -44,13 +48,24 @@ export PETSC_GIT_BRANCH="v${PETSC_VERSION}"
 #export PETSC_DIR=${OPENFOAM_THIRDPARTY_DIR}/petsc-${PETSC_VERSION}
 #export PETSC_ARCH=linux-gnu
 
+echo "export PETSC_GIT_URL=${PETSC_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export PETSC_GIT_BRANCH=${PETSC_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+
 export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
 export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION}"
 export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/scotch_${SCOTCH_VERSION}"
 
+echo "export SCOTCH_GIT_URL=${SCOTCH_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export SCOTCH_GIT_BRANCH=${SCOTCH_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export SCOTCH_DIR=${SCOTCH_DIR}" >> /etc/profile.d/buildenv.sh
+
 export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
 export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
 export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION}"
+
+echo "export KAHIP_GIT_URL=${KAHIP_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export KAHIP_GIT_BRANCH=${KAHIP_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_DIR=${KAHIP_DIR}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 # load sources

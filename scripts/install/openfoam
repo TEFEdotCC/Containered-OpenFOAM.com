@@ -12,12 +12,21 @@ export PETSC_VERSION=3.13.2
 export SCOTCH_VERSION=6.0.9
 export KAHIP_VERSION=2.12
 
-export preCICE_VERSION=2.1.0
+echo "export ADIOS2_VERSION=${ADIOS2_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_MAJOR=${ADIOS2_VERSION_MAJOR}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_MINOR=${ADIOS2_VERSION_MINOR}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_SUFFIX=${ADIOS2_VERSION_SUFFIX}" >> /etc/profile.d/buildenv.sh
+echo "export FFTW_VERSION=${FFTW_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export PETSC_VERSION=${PETSC_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export SCOTCH_VERSION=${SCOTCH_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_VERSION=${KAHIP_VERSION}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 #
 export OPENFOAM_DIR="/opt/openfoam"
 export OPENFOAM_THIRDPARTY_DIR="$OPENFOAM_DIR/ThirdParty"
+
+echo "export OPENFOAM_DIR=${OPENFOAM_DIR}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 #
@@ -42,9 +51,6 @@ export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/scotch_${SCOTCH_VERSION}"
 export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
 export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
 export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION}"
-
-export preCICE_BUILD_DIR='/opt/preCICE'
-export PRECICE_ROOT="${preCICE_BUILD_DIR}/precice-${preCICE_VERSION}"
 
 # ------------------------------------------------------------------------------
 # load sources
@@ -103,32 +109,6 @@ cd ${OPENFOAM_THIRDPARTY_DIR}
 #
 cd ${OPENFOAM_DIR}
 ./Allwmake -j -s -q -a
-
-# ------------------------------------------------------------------------------
-# add preCICE
-
-mkdir -p ${preCICE_BUILD_DIR}
-cd ${preCICE_BUILD_DIR}
-wget -q https://github.com/precice/precice/archive/v${preCICE_VERSION}.tar.gz
-tar -xzvf v${preCICE_VERSION}.tar.gz
-rm -f v${preCICE_VERSION}.tar.gz
-mkdir -p ${PRECICE_ROOT}/build && cd ${PRECICE_ROOT}/build
-
-echo "export PRECICE_ROOT=${PRECICE_ROOT}" >> /etc/profile.d/preCICE.sh
-chmod +x /etc/profile.d/preCICE.sh
-
-# TODO: PRECICE_PETScMapping=off because of fedora petsc-devel will crash the configuration routine.
-cmake                                                                           \
-  -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release                             \
-  -DPRECICE_MPICommunication=ON                                                 \
-  -DMPI_CXX_COMPILER=/usr/lib64/openmpi/bin/mpicxx                              \
-  -DMPI_C_COMPILER=/usr/lib64/openmpi/bin/mpicc                                 \
-  -DMPI_Fortran_COMPILER=/usr/lib64/openmpi/bin/mpifort                         \
-  -DPRECICE_PETScMapping=off                                                    \
-  ..
-
-make -j$(nproc)
-make install && make clean && rm -rf *
 
 # ------------------------------------------------------------------------------
 # preCICE adapter

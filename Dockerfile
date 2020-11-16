@@ -12,6 +12,14 @@ ARG OPENFOAM_THIRDPARTY_GIT_URL
 ARG OPENFOAM_GIT_BRANCH
 ARG OPENFOAM_THIRDPARTY_GIT_BRANCH
 
+ENV TZ=Europe/Berlin
+ENV LANG=de_DE.UTF-8
+ENV LC_COLLATE=de_DE.UTF-8
+ENV LC_CTYPE=de_DE.UTF-8
+ENV LC_NUMERIC=de_DE.UTF-8
+ENV LC_TIME=de_DE.UTF-8
+ENV LC_MESSAGES=de_DE.UTF-8
+
 RUN echo "export BUILD_DATE=${BUILD_DATE}" >> /etc/profile.d/buildenv.sh \
  && echo "export SOURCE_COMMIT=${SOURCE_COMMIT}" >> /etc/profile.d/buildenv.sh \
  && echo "export DOCKERFILE_PATH=${DOCKERFILE_PATH}" >> /etc/profile.d/buildenv.sh \
@@ -21,7 +29,6 @@ RUN echo "export BUILD_DATE=${BUILD_DATE}" >> /etc/profile.d/buildenv.sh \
  && echo "export OPENFOAM_GIT_BRANCH=${OPENFOAM_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh \
  && echo "export OPENFOAM_THIRDPARTY_GIT_BRANCH=${OPENFOAM_THIRDPARTY_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh \
  && chmod +x /etc/profile.d/buildenv.sh
-
 
 # install software
 RUN dnf update -y && dnf upgrade -y                                                         \
@@ -45,17 +52,8 @@ RUN dnf update -y && dnf upgrade -y                                             
       metis-devel scotch scotch-devel                                                       \
       ptscotch-openmpi ptscotch-openmpi-devel ptscotch-openmpi-devel-parmetis               \
       petsc petsc-devel petsc-openmpi petsc-openmpi-devel                                   \
- && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*
-
-ENV TZ=Europe/Berlin
-ENV LANG=de_DE.UTF-8
-ENV LC_COLLATE=de_DE.UTF-8
-ENV LC_CTYPE=de_DE.UTF-8
-ENV LC_NUMERIC=de_DE.UTF-8
-ENV LC_TIME=de_DE.UTF-8
-ENV LC_MESSAGES=de_DE.UTF-8
-
-RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime                                 \
+ && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*                        \
+ && ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime                                 \
  && echo $TZ > /etc/timezone                                                                \
  && echo "$LANG UTF-8" >> /etc/locale.gen                                                   \
  && echo "LANG=$LANG" >> /etc/locale.conf                                                   \
@@ -82,8 +80,9 @@ SHELL ["/bin/bash", "-c"]
 
 #
 COPY scripts /opt/scripts
-RUN /opt/scripts/install/preCICE > /opt/log.preCICE
 RUN /opt/scripts/install/openfoam > /opt/log.openfoam
+RUN /opt/scripts/install/preCICE > /opt/log.preCICE                                         \
+ && /opt/scripts/install/preCICE-openfoam > /opt/log.preCICE-openfoam
 RUN rm -rf rm /opt/scripts
 
 #

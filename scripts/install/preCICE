@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-export preCICE_VERSION=2.1.0
+export preCICE_VERSION=2.1.1
 
 export preCICE_BUILD_DIR='/opt/preCICE'
 export PRECICE_ROOT="${preCICE_BUILD_DIR}/precice-${preCICE_VERSION}"
@@ -10,8 +10,6 @@ echo "export preCICE_BUILD_DIR=${preCICE_BUILD_DIR}" >> /etc/profile.d/buildenv.
 echo "export PRECICE_ROOT=${PRECICE_ROOT}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
-# add preCICE
-
 mkdir -p ${preCICE_BUILD_DIR}
 cd ${preCICE_BUILD_DIR}
 wget -q https://github.com/precice/precice/archive/v${preCICE_VERSION}.tar.gz

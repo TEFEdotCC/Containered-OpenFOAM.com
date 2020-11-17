@@ -118,7 +118,7 @@ cd ${OPENFOAM_THIRDPARTY_DIR}
 ./makeAdios2
 #./makeKAHIP
 #./makePETSC
-./makeSCOTCH
+#./makeSCOTCH
 #./makeFFTW
 
 #

@@ -81,8 +81,8 @@ SHELL ["/bin/bash", "-c"]
 #
 COPY scripts /opt/scripts
 RUN /opt/scripts/install/openfoam > /opt/log.openfoam
-RUN /opt/scripts/install/preCICE > /opt/log.preCICE                                         \
- && /opt/scripts/install/preCICE-openfoam > /opt/log.preCICE-openfoam
+RUN /opt/scripts/install/preCICE > /opt/log.preCICE
+RUN /opt/scripts/install/preCICE-openfoam > /opt/log.preCICE-openfoam
 RUN rm -rf rm /opt/scripts
 
 #

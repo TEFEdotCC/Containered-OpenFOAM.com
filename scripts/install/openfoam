@@ -12,18 +12,32 @@ export PETSC_VERSION=3.13.2
 export SCOTCH_VERSION=6.0.6
 export KAHIP_VERSION=2.12
 
-export preCICE_VERSION=2.1.0
+echo "export ADIOS2_VERSION=${ADIOS2_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_MAJOR=${ADIOS2_VERSION_MAJOR}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_MINOR=${ADIOS2_VERSION_MINOR}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_VERSION_SUFFIX=${ADIOS2_VERSION_SUFFIX}" >> /etc/profile.d/buildenv.sh
+echo "export FFTW_VERSION=${FFTW_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export PETSC_VERSION=${PETSC_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export SCOTCH_VERSION=${SCOTCH_VERSION}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_VERSION=${KAHIP_VERSION}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 #
 export OPENFOAM_DIR="/opt/openfoam"
 export OPENFOAM_THIRDPARTY_DIR="$OPENFOAM_DIR/ThirdParty"
 
+echo "export OPENFOAM_DIR=${OPENFOAM_DIR}" >> /etc/profile.d/buildenv.sh
+echo "export OPENFOAM_THIRDPARTY_DIR=${OPENFOAM_THIRDPARTY_DIR}" >> /etc/profile.d/buildenv.sh
+
 # ------------------------------------------------------------------------------
 #
 export ADIOS2_GIT_URL="https://github.com/ornladios/ADIOS2.git"
 export ADIOS2_GIT_BRANCH="release_${ADIOS2_VERSION_MAJOR}${ADIOS2_VERSION_MINOR}"
 export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
+
+echo "export ADIOS2_GIT_URL=${ADIOS2_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export ADIOS2_GIT_BRANCH=${ADIOS2_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_DIR=${ADIOS2_DIR}" >> /etc/profile.d/buildenv.sh
 
 #export FFTW_GIT_URL="0"
 #export FFTW_GIT_BRANCH="0"
@@ -32,19 +46,26 @@ export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
 export PETSC_GIT_URL="https://gitlab.com/petsc/petsc.git"
 export PETSC_GIT_BRANCH="v${PETSC_VERSION}"
 #export PETSC_DIR="${OPENFOAM_THIRDPARTY_DIR}/petsc_${PETSC_VERSION}"
-#export PETSC_DIR=${OPENFOAM_THIRDPARTY_DIR}/petsc-${PETSC_VERSION}
 #export PETSC_ARCH=linux-gnu
+
+echo "export PETSC_GIT_URL=${PETSC_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export PETSC_GIT_BRANCH=${PETSC_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
 
 export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
 export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION}"
 export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/scotch_${SCOTCH_VERSION}"
 
+echo "export SCOTCH_GIT_URL=${SCOTCH_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export SCOTCH_GIT_BRANCH=${SCOTCH_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export SCOTCH_DIR=${SCOTCH_DIR}" >> /etc/profile.d/buildenv.sh
+
 export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
 export KAHIP_GIT_BRANCH="v${KAHIP_VERSION}"
 export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION}"
 
-export preCICE_BUILD_DIR='/opt/preCICE'
-export PRECICE_ROOT="${preCICE_BUILD_DIR}/precice-${preCICE_VERSION}"
+echo "export KAHIP_GIT_URL=${KAHIP_GIT_URL}" >> /etc/profile.d/buildenv.
+echo "export KAHIP_GIT_BRANCH=${KAHIP_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_DIR=${KAHIP_DIR}" >> /etc/profile.d/buildenv.sh
 
 # ------------------------------------------------------------------------------
 # load sources
@@ -95,9 +116,9 @@ git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
 #
 cd ${OPENFOAM_THIRDPARTY_DIR}
 ./makeAdios2
-#./makeKAHIP
+./makeKAHIP
 #./makePETSC
-./makeSCOTCH ${SCOTCH_DIR}
+./makeSCOTCH
 #./makeFFTW
 
 #
@@ -105,55 +126,13 @@ cd ${OPENFOAM_DIR}
 ./Allwmake -j -s -q -a
 
 # ------------------------------------------------------------------------------
-# add preCICE
+# cleanup openfoam
 
-mkdir -p ${preCICE_BUILD_DIR}
-cd ${preCICE_BUILD_DIR}
-wget -q https://github.com/precice/precice/archive/v${preCICE_VERSION}.tar.gz
-tar -xzvf v${preCICE_VERSION}.tar.gz
-rm -f v${preCICE_VERSION}.tar.gz
-mkdir -p ${PRECICE_ROOT}/build && cd ${PRECICE_ROOT}/build
-
-echo "export PRECICE_ROOT=${PRECICE_ROOT}" >> /etc/profile.d/preCICE.sh
-chmod +x /etc/profile.d/preCICE.sh
-
-# TODO: PRECICE_PETScMapping=off because of fedora petsc-devel will crash the configuration routine.
-cmake                                                                           \
-  -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release                             \
-  -DPRECICE_MPICommunication=ON                                                 \
-  -DMPI_CXX_COMPILER=/usr/lib64/openmpi/bin/mpicxx                              \
-  -DMPI_C_COMPILER=/usr/lib64/openmpi/bin/mpicc                                 \
-  -DMPI_Fortran_COMPILER=/usr/lib64/openmpi/bin/mpifort                         \
-  -DPRECICE_PETScMapping=off                                                    \
-  ..
-
-make -j$(nproc)
-make install && make clean && rm -rf *
-
-# ------------------------------------------------------------------------------
-# preCICE adapter
-preCICE_adapter_BUILD_DIR=${preCICE_BUILD_DIR}
-#preCICE_adapter_of_GIT_URL='https://github.com/precice/openfoam-adapter.git'
-preCICE_adapter_of_GIT_URL='https://github.com/TEFEdotCC/openfoam-adapter.git'
-
-#git clone ${preCICE_adapter_of_GIT_URL} ${preCICE_adapter_BUILD_DIR}/openfoam-adapter
-git clone --branch CHT_WallHeatFlux ${preCICE_adapter_of_GIT_URL} ${preCICE_adapter_BUILD_DIR}/openfoam-adapter
-
-cd ${preCICE_adapter_BUILD_DIR}/openfoam-adapter
-sed -ie "s|ADAPTER_WMAKE_OPTIONS=\"|ADAPTER_WMAKE_OPTIONS=\"-j |" Allwmake
-#sed -ie 's|-DADAPTER_DEBUG_MODE| |' Allwmake
-sed -ie 's|${FOAM_USER_LIBBIN}|${FOAM_EXT_LIBBIN}|' Allwmake
-
-./Allwmake
+cd ${OPENFOAM_THIRDPARTY_DIR}
 ./Allclean
 
-# ------------------------------------------------------------------------------
-
-# cleanup openfoam
-#cd ${OPENFOAM_THIRDPARTY_DIR}
+cd ${OPENFOAM_DIR}
 #./Allclean
-#cd ${OPENFOAM_DIR}
-#./Allclean
-#find -name '*.o' | xargs rm
-#find -name '*.dep' | xargs rm
+find -name '*.o' | xargs rm
+find -name '*.dep' | xargs rm
 #rm -rf build/*

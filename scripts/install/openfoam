@@ -129,10 +129,10 @@ cd ${OPENFOAM_DIR}
 # cleanup openfoam
 
 cd ${OPENFOAM_THIRDPARTY_DIR}
-#./Allclean
+./Allclean
 
 cd ${OPENFOAM_DIR}
-./Allclean
+#./Allclean
 find -name '*.o' | xargs rm
 find -name '*.dep' | xargs rm
 #rm -rf build/*

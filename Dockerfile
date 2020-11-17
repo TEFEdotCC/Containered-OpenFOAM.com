@@ -12,14 +12,6 @@ ARG OPENFOAM_THIRDPARTY_GIT_URL
 ARG OPENFOAM_GIT_BRANCH
 ARG OPENFOAM_THIRDPARTY_GIT_BRANCH
 
-ENV TZ=Europe/Berlin
-ENV LANG=de_DE.UTF-8
-ENV LC_COLLATE=de_DE.UTF-8
-ENV LC_CTYPE=de_DE.UTF-8
-ENV LC_NUMERIC=de_DE.UTF-8
-ENV LC_TIME=de_DE.UTF-8
-ENV LC_MESSAGES=de_DE.UTF-8
-
 RUN echo "export BUILD_DATE=${BUILD_DATE}" >> /etc/profile.d/buildenv.sh \
  && echo "export SOURCE_COMMIT=${SOURCE_COMMIT}" >> /etc/profile.d/buildenv.sh \
  && echo "export DOCKERFILE_PATH=${DOCKERFILE_PATH}" >> /etc/profile.d/buildenv.sh \
@@ -52,16 +44,7 @@ RUN dnf update -y && dnf upgrade -y                                             
       metis-devel scotch scotch-devel                                                       \
       ptscotch-openmpi ptscotch-openmpi-devel ptscotch-openmpi-devel-parmetis               \
       petsc petsc-devel petsc-openmpi petsc-openmpi-devel                                   \
- && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*                        \
- && ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime                                 \
- && echo $TZ > /etc/timezone                                                                \
- && echo "$LANG UTF-8" >> /etc/locale.gen                                                   \
- && echo "LANG=$LANG" >> /etc/locale.conf                                                   \
- && echo "LC_COLLATE=$LC_COLLATE" >> /etc/locale.conf                                       \
- && echo "LC_CTYPE=$LC_CTYPE" >> /etc/locale.conf                                           \
- && echo "LC_NUMERIC=$LC_NUMERIC" >> /etc/locale.conf                                       \
- && echo "LC_TIME=$LC_TIME" >> /etc/locale.conf                                             \
- && echo "LC_MESSAGES=$LC_MESSAGES" >> /etc/locale.conf
+ && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*
 
 # setup path's
 RUN echo 'export PATH=$PATH:/usr/lib64/openmpi/bin' >> /etc/profile.d/openfoam.sh           \

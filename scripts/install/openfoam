@@ -116,7 +116,7 @@ git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
 #
 cd ${OPENFOAM_THIRDPARTY_DIR}
 ./makeAdios2
-./makeKAHIP
+#./makeKAHIP
 #./makePETSC
 ./makeSCOTCH
 #./makeFFTW

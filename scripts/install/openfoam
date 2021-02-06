@@ -30,19 +30,8 @@ echo ". $OPENFOAM_DIR/etc/bashrc" >> /etc/profile.d/openfoam.sh
 . /etc/profile.d/openfoam.sh || echo "skip errors."
 
 # scotch
-source $OPENFOAM_DIR/etc/config.sh/scotch
-export SCOTCH_VERSION_NUMBER=$(echo $SCOTCH_VERSION | sed 's/^[^0-9]*//')
-export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
-export SCOTCH_GIT_BRANCH="v${SCOTCH_VERSION_NUMBER}"
-export SCOTCH_DIR="${OPENFOAM_THIRDPARTY_DIR}/${SCOTCH_VERSION}"
-
-echo "export SCOTCH_VERSION=${SCOTCH_VERSION}" >> /etc/profile.d/buildenv.sh
-echo "export SCOTCH_VERSION_NUMBER=${SCOTCH_VERSION_NUMBER}" >> /etc/profile.d/buildenv.sh
-echo "export SCOTCH_GIT_URL=${SCOTCH_GIT_URL}" >> /etc/profile.d/buildenv.
-echo "export SCOTCH_GIT_BRANCH=${SCOTCH_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
-echo "export SCOTCH_DIR=${SCOTCH_DIR}" >> /etc/profile.d/buildenv.sh
-
-git clone --branch ${SCOTCH_GIT_BRANCH} ${SCOTCH_GIT_URL} ${SCOTCH_DIR}
+cd ${OPENFOAM_THIRDPARTY_DIR}
+svn checkout https://github.com/OpenFOAM/ThirdParty-5.x/trunk/scotch_6.0.3
 
 #
 cd ${OPENFOAM_THIRDPARTY_DIR}

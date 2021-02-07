@@ -37,8 +37,8 @@ export ADIOS2_VERSION="${ADIOS2_VERSION_MAJOR}.${ADIOS2_VERSION_MINOR}.${ADIOS2_
 #export ADIOS2_GIT_URL="https://github.com/ornladios/ADIOS2.git"
 #export ADIOS2_GIT_BRANCH="release_${ADIOS2_VERSION_MAJOR}${ADIOS2_VERSION_MINOR}"
 #export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
-export ADIOS2_ARCHIVE_FILE_NAME="ADIOS2-${ADIOS2_VERSION}.tar.gz"
-export ADIOS2_DOWNLOAD_URL="https://github.com/ornladios/ADIOS2/archive/v${ADIOS2_VERSION_ENTIRE}.tar.gz"
+export ADIOS2_ARCHIVE_FILE_NAME="v${ADIOS2_VERSION_ENTIRE}.tar.gz"
+export ADIOS2_DOWNLOAD_URL="https://github.com/ornladios/ADIOS2/archive/$ADIOS2_ARCHIVE_FILE_NAME"
 
 echo "export ADIOS2_VERSION_ENTIRE=${ADIOS2_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
 echo "export ADIOS2_VERSION_MAJOR=${ADIOS2_VERSION_MAJOR}" >> /etc/profile.d/buildenv.sh
@@ -143,23 +143,27 @@ export KAHIP_VERSION_ENTIRE=$(echo "$KAHIP_VERSION" | sed 's|^[^-_]*||' | sed 's
 #export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
 #export KAHIP_GIT_BRANCH="v${KAHIP_VERSION_ENTIRE}"
 #export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION_ENTIRE}"
-export KAHIP_ARCHIVE_FILE_NAME="KaHIP-${KAHIP_VERSION_ENTIRE}.tar.gz"
-export KAHIP_DOWNLOAD_URL="https://github.com/KaHIP/KaHIP/archive/v${KAHIP_VERSION_ENTIRE}.tar.gz"
+export KAHIP_ARCHIVE_DIR_NAME="KaHIP-${KAHIP_VERSION_ENTIRE}"
+export KAHIP_DIR_NAME="kahip-${KAHIP_VERSION_ENTIRE}"
+export KAHIP_ARCHIVE_FILE_NAME="v${KAHIP_VERSION_ENTIRE}.tar.gz"
+export KAHIP_DOWNLOAD_URL="https://github.com/KaHIP/KaHIP/archive/${KAHIP_ARCHIVE_FILE_NAME}"
 
 echo "export KAHIP_VERSION_ENTIRE=${KAHIP_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
 #echo "export KAHIP_GIT_URL=${KAHIP_GIT_URL}" >> /etc/profile.d/buildenv.sh
 #echo "export KAHIP_GIT_BRANCH=${KAHIP_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
 #echo "export KAHIP_DIR=${KAHIP_DIR}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_ARCHIVE_DIR_NAME=${KAHIP_ARCHIVE_DIR_NAME}" >> /etc/profile.d/buildenv.sh
 echo "export KAHIP_ARCHIVE_FILE_NAME=${KAHIP_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_DIR_NAME=${KAHIP_DIR_NAME}" >> /etc/profile.d/buildenv.sh
 echo "export KAHIP_DOWNLOAD_URL=${KAHIP_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
 
 #git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
 
 cd $OPENFOAM_THIRDPARTY_DIR
-wget -q ${ADIOS2_DOWNLOAD_URL}
-tar -xzvf ${ADIOS2_ARCHIVE_FILE_NAME}
-rm -f ${ADIOS2_ARCHIVE_FILE_NAME}
-mv "KaHIP-${KAHIP_VERSION_ENTIRE}" "kahip-${KAHIP_VERSION_ENTIRE}"
+wget -q ${KAHIP_DOWNLOAD_URL}
+tar -xzvf ${KAHIP_ARCHIVE_FILE_NAME}
+rm -f ${KAHIP_ARCHIVE_FILE_NAME}
+mv $KAHIP_ARCHIVE_DIR_NAME $KAHIP_DIR_NAME
 
 # ------------------------------------------------------------------------------
 #

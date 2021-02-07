@@ -1,4 +1,4 @@
-FROM fedora:32
+FROM fedora:33
 LABEL author "Thomas Enzinger <info@tefe.cc>"
 
 ARG BUILD_DATE
@@ -10,6 +10,7 @@ ARG OPENFOAM_GIT_URL
 ARG OPENFOAM_THIRDPARTY_GIT_URL
 ARG OPENFOAM_GIT_BRANCH
 ARG OPENFOAM_THIRDPARTY_GIT_BRANCH
+ARG OPENFOAM_VERSION_ENTIRE
 
 RUN echo "export BUILD_DATE=${BUILD_DATE}" >> /etc/profile.d/buildenv.sh \
  && echo "export SOURCE_COMMIT=${SOURCE_COMMIT}" >> /etc/profile.d/buildenv.sh \
@@ -18,6 +19,7 @@ RUN echo "export BUILD_DATE=${BUILD_DATE}" >> /etc/profile.d/buildenv.sh \
  && echo "export OPENFOAM_THIRDPARTY_GIT_URL=${OPENFOAM_THIRDPARTY_GIT_URL}" >> /etc/profile.d/buildenv.sh \
  && echo "export OPENFOAM_GIT_BRANCH=${OPENFOAM_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh \
  && echo "export OPENFOAM_THIRDPARTY_GIT_BRANCH=${OPENFOAM_THIRDPARTY_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh \
+ && echo "export OPENFOAM_VERSION_ENTIRE=${OPENFOAM_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh \
  && chmod +x /etc/profile.d/buildenv.sh
 
 

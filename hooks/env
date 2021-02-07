@@ -22,7 +22,7 @@ if [ "$SOURCE_BRANCH" = "develop" ]; then
   #
   # branch : develop
   #   mostly stable branch for next release.
-  export OPENFOAM_VERSION="develop"
+  export OPENFOAM_VERSION_ENTIRE="develop"
   export OPENFOAM_GIT_BRANCH="develop"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="develop"
   export IMAGE_VERSION="dev"
@@ -31,23 +31,23 @@ elif [ $(git ls-remote --heads $OPENFOAM_GIT_URL "maintenance-$SOURCE_BRANCH" | 
   #
   # branch : maintenance-...
   #   previous releases with bug fixes
-  export OPENFOAM_VERSION="$SOURCE_BRANCH"
-  export IMAGE_VERSION="$OPENFOAM_VERSION"
-  export OPENFOAM_GIT_BRANCH="maintenance-$OPENFOAM_VERSION"
-  export OPENFOAM_THIRDPARTY_GIT_BRANCH="$OPENFOAM_VERSION"
+  export OPENFOAM_VERSION_ENTIRE="$SOURCE_BRANCH"
+  export IMAGE_VERSION="$OPENFOAM_VERSION_ENTIRE"
+  export OPENFOAM_GIT_BRANCH="maintenance-$OPENFOAM_VERSION_ENTIRE"
+  export OPENFOAM_THIRDPARTY_GIT_BRANCH="$OPENFOAM_VERSION_ENTIRE"
 
 elif [ "$SOURCE_BRANCH" = "master" ] || [ $(git ls-remote $OPENFOAM_GIT_URL "OpenFOAM-$OPENFOAM_MASTER_VERSION" | wc -l) -eq 1 ]; then
   #
   # branch : master
   #   last releases with bug fixes, should be mostly stable
-  export OPENFOAM_VERSION="$OPENFOAM_MASTER_VERSION"
+  export OPENFOAM_VERSION_ENTIRE="$OPENFOAM_MASTER_VERSION"
   export OPENFOAM_GIT_BRANCH="master"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="main"
 
   if [ "$SOURCE_BRANCH" = "master" ];then
     export IMAGE_VERSION="latest"
   else
-    export IMAGE_VERSION="$OPENFOAM_VERSION"
+    export IMAGE_VERSION="$OPENFOAM_VERSION_ENTIRE"
   fi
 else
   echo "FATAL: OpenFOAM version detection error."

@@ -4,8 +4,8 @@ export WM_NCOMPPROCS=$(grep -c ^processor /proc/cpuinfo)
 
 # ------------------------------------------------------------------------------
 #
-export OPENFOAM_DIR="/opt/OpenFOAM-v1712"
-export OPENFOAM_THIRDPARTY_DIR="/opt/ThirdParty-v1712"
+export OPENFOAM_DIR="/opt/OpenFOAM-plus"
+export OPENFOAM_THIRDPARTY_DIR="/opt/ThirdParty-plus"
 
 echo "export OPENFOAM_DIR=${OPENFOAM_DIR}" >> /etc/profile.d/buildenv.sh
 echo "export OPENFOAM_THIRDPARTY_DIR=${OPENFOAM_THIRDPARTY_DIR}" >> /etc/profile.d/buildenv.sh

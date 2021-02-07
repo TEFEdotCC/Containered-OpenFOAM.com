@@ -11,7 +11,7 @@ export OPENFOAM_THIRDPARTY_DIR="/opt/OpenFOAM/ThirdParty-${OPENFOAM_VERSION_ENTI
 
 echo "export OPENFOAM_DIR=${OPENFOAM_DIR}" >> /etc/profile.d/buildenv.sh
 echo "export OPENFOAM_THIRDPARTY_DIR=${OPENFOAM_THIRDPARTY_DIR}" >> /etc/profile.d/buildenv.sh
-echo ". $OPENFOAM_DIR/etc/bashrc || echo 'warning: skip errors as long as cgal is supported by github'" >> /etc/profile.d/openfoam.sh
+echo '. $OPENFOAM_DIR/etc/bashrc || echo "skip return $?"'  >> /etc/profile.d/openfoam.sh
 
 #
 git clone --branch $OPENFOAM_GIT_BRANCH            $OPENFOAM_GIT_URL            $OPENFOAM_DIR
@@ -27,33 +27,42 @@ git submodule init
 #
 # ADIOS2
 source $OPENFOAM_DIR/etc/config.sh/adios2
+# adios2_version=ADIOS2-2.6.0
 
 export ADIOS2_VERSION_ENTIRE=$(echo "$adios2_version" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
 export ADIOS2_VERSION_MAJOR=$(echo "$ADIOS2_VERSION_ENTIRE" | cut -d'.' -f1)
 export ADIOS2_VERSION_MINOR=$(echo "$ADIOS2_VERSION_ENTIRE" | cut -d'.' -f2)
 export ADIOS2_VERSION_SUFFIX=$(echo "$ADIOS2_VERSION_ENTIRE" | cut -d'.' -f3)
 export ADIOS2_VERSION="${ADIOS2_VERSION_MAJOR}.${ADIOS2_VERSION_MINOR}.${ADIOS2_VERSION_SUFFIX}"
-
-export ADIOS2_GIT_URL="https://github.com/ornladios/ADIOS2.git"
-export ADIOS2_GIT_BRANCH="release_${ADIOS2_VERSION_MAJOR}${ADIOS2_VERSION_MINOR}"
-export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
+#export ADIOS2_GIT_URL="https://github.com/ornladios/ADIOS2.git"
+#export ADIOS2_GIT_BRANCH="release_${ADIOS2_VERSION_MAJOR}${ADIOS2_VERSION_MINOR}"
+#export ADIOS2_DIR="${OPENFOAM_THIRDPARTY_DIR}/ADIOS2-${ADIOS2_VERSION}"
+export ADIOS2_ARCHIVE_FILE_NAME="ADIOS2-${ADIOS2_VERSION}.tar.gz"
+export ADIOS2_DOWNLOAD_URL="https://github.com/ornladios/ADIOS2/archive/v${ADIOS2_VERSION_ENTIRE}.tar.gz"
 
 echo "export ADIOS2_VERSION_ENTIRE=${ADIOS2_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
 echo "export ADIOS2_VERSION_MAJOR=${ADIOS2_VERSION_MAJOR}" >> /etc/profile.d/buildenv.sh
 echo "export ADIOS2_VERSION_MINOR=${ADIOS2_VERSION_MINOR}" >> /etc/profile.d/buildenv.sh
 echo "export ADIOS2_VERSION_SUFFIX=${ADIOS2_VERSION_SUFFIX}" >> /etc/profile.d/buildenv.sh
 echo "export ADIOS2_VERSION=${ADIOS2_VERSION}" >> /etc/profile.d/buildenv.sh
+#echo "export ADIOS2_GIT_URL=${ADIOS2_GIT_URL}" >> /etc/profile.d/buildenv.sh
+#echo "export ADIOS2_GIT_BRANCH=${ADIOS2_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+#echo "export ADIOS2_DIR=${ADIOS2_DIR}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_ARCHIVE_FILE_NAME=${ADIOS2_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
+echo "export ADIOS2_DOWNLOAD_URL=${ADIOS2_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
 
-echo "export ADIOS2_GIT_URL=${ADIOS2_GIT_URL}" >> /etc/profile.d/buildenv.sh
-echo "export ADIOS2_GIT_BRANCH=${ADIOS2_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
-echo "export ADIOS2_DIR=${ADIOS2_DIR}" >> /etc/profile.d/buildenv.sh
+#git clone --branch ${ADIOS2_GIT_BRANCH} ${ADIOS2_GIT_URL} ${ADIOS2_DIR}
 
-git clone --branch ${ADIOS2_GIT_BRANCH} ${ADIOS2_GIT_URL} ${ADIOS2_DIR}
+cd $OPENFOAM_THIRDPARTY_DIR
+wget -q ${ADIOS2_DOWNLOAD_URL}
+tar -xzvf ${ADIOS2_ARCHIVE_FILE_NAME}
+rm -f ${ADIOS2_ARCHIVE_FILE_NAME}
 
 # ------------------------------------------------------------------------------
 #
 # FFTW
 source $OPENFOAM_DIR/etc/config.sh/FFTW
+# fftw_version=fftw-3.3.7
 
 export FFTW_VERSION_ENTIRE=$(echo "$fftw_version" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
 export FFTW_FILE_NAME="fftw-${FFTW_VERSION_ENTIRE}"
@@ -70,6 +79,7 @@ rm -f ${FFTW_FILE_NAME}.tar.gz
 #
 # petsc
 source $OPENFOAM_DIR/etc/config.sh/petsc
+# petsc_version=petsc-3.14.2
 
 export PETSC_VERSION_ENTIRE=$(echo "$petsc_version" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
 export PETSC_GIT_URL="https://gitlab.com/petsc/petsc.git"
@@ -89,6 +99,7 @@ echo "export PETSC_ARCH=${PETSC_ARCH}" >> /etc/profile.d/buildenv.sh
 #
 # scotch
 source $OPENFOAM_DIR/etc/config.sh/scotch
+# SCOTCH_VERSION=scotch_6.0.9
 
 export SCOTCH_VERSION_ENTIRE=$(echo "$SCOTCH_VERSION" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
 export SCOTCH_GIT_URL="https://gitlab.inria.fr/scotch/scotch.git"
@@ -104,53 +115,96 @@ git clone --branch ${SCOTCH_GIT_BRANCH} ${SCOTCH_GIT_URL} ${SCOTCH_DIR}
 
 # ------------------------------------------------------------------------------
 #
+# metis
+source $OPENFOAM_DIR/etc/config.sh/metis
+# METIS_VERSION=metis-5.1.0
+
+export METIS_VERSION_ENTIRE=$(echo "$METIS_VERSION" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
+
+export METIS_ARCHIVE_FILE_NAME="metis-${METIS_VERSION_ENTIRE}.tar.gz"
+export METIS_DOWNLOAD_URL="http://glaros.dtc.umn.edu/gkhome/fetch/sw/metis/${METIS_ARCHIVE_FILE_NAME}"
+
+echo "export METIS_VERSION_ENTIRE=${METIS_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
+echo "export METIS_ARCHIVE_FILE_NAME=${METIS_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
+echo "export METIS_DOWNLOAD_URL=${METIS_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
+
+cd $OPENFOAM_THIRDPARTY_DIR
+wget -q ${METIS_DOWNLOAD_URL}
+tar -xzvf ${METIS_ARCHIVE_FILE_NAME}
+rm -f ${METIS_ARCHIVE_FILE_NAME}
+
+# ------------------------------------------------------------------------------
+#
 # kahip
 source $OPENFOAM_DIR/etc/config.sh/kahip
+# KAHIP_VERSION=kahip-2.12
 
 export KAHIP_VERSION_ENTIRE=$(echo "$KAHIP_VERSION" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
-export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
-export KAHIP_GIT_BRANCH="v${KAHIP_VERSION_ENTIRE}"
-export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION_ENTIRE}"
+#export KAHIP_GIT_URL="https://github.com/KaHIP/KaHIP.git"
+#export KAHIP_GIT_BRANCH="v${KAHIP_VERSION_ENTIRE}"
+#export KAHIP_DIR="${OPENFOAM_THIRDPARTY_DIR}/kahip-${KAHIP_VERSION_ENTIRE}"
+export KAHIP_ARCHIVE_FILE_NAME="KaHIP-${KAHIP_VERSION_ENTIRE}.tar.gz"
+export KAHIP_DOWNLOAD_URL="https://github.com/KaHIP/KaHIP/archive/v${KAHIP_VERSION_ENTIRE}.tar.gz"
 
 echo "export KAHIP_VERSION_ENTIRE=${KAHIP_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
-echo "export KAHIP_GIT_URL=${KAHIP_GIT_URL}" >> /etc/profile.d/buildenv.sh
-echo "export KAHIP_GIT_BRANCH=${KAHIP_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
-echo "export KAHIP_DIR=${KAHIP_DIR}" >> /etc/profile.d/buildenv.sh
+#echo "export KAHIP_GIT_URL=${KAHIP_GIT_URL}" >> /etc/profile.d/buildenv.sh
+#echo "export KAHIP_GIT_BRANCH=${KAHIP_GIT_BRANCH}" >> /etc/profile.d/buildenv.sh
+#echo "export KAHIP_DIR=${KAHIP_DIR}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_ARCHIVE_FILE_NAME=${KAHIP_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
+echo "export KAHIP_DOWNLOAD_URL=${KAHIP_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
 
-git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
+#git clone --branch ${KAHIP_GIT_BRANCH} ${KAHIP_GIT_URL} ${KAHIP_DIR}
+
+cd $OPENFOAM_THIRDPARTY_DIR
+wget -q ${ADIOS2_DOWNLOAD_URL}
+tar -xzvf ${ADIOS2_ARCHIVE_FILE_NAME}
+rm -f ${ADIOS2_ARCHIVE_FILE_NAME}
+mv "KaHIP-${KAHIP_VERSION_ENTIRE}" "kahip-${KAHIP_VERSION_ENTIRE}"
 
 # ------------------------------------------------------------------------------
 #
 # CGAL
-#source $OPENFOAM_DIR/etc/config.sh/CGAL
-#boost_version=boost_1_66_0
-#cgal_version=CGAL-4.12.2
+source $OPENFOAM_DIR/etc/config.sh/CGAL
+# boost_version=boost_1_66_0
+# cgal_version=CGAL-4.12.2
 
 export BOOST_VERSION_ENTIRE=$(echo "$boost_version" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||' | sed -r 's/[_-]+/./g')
 export CGAL_VERSION_ENTIRE=$(echo "$cgal_version" | sed 's|^[^-_]*||' | sed 's|^-||' | sed 's|^_||')
+export CGAL_VERSION_MAJOR=$(echo $CGAL_VERSION_ENTIRE | cut -d'.' -f1)
 
 export BOOST_ARCHIVE_FILE_NAME="boost_$(echo $BOOST_VERSION_ENTIRE  | sed -r 's/[.-]+/_/g').tar.gz"
-export CGAL_ARCHIVE_FILE_NAME="v${CGAL_VERSION_ENTIRE}.tar.gz"
-
 export BOOST_DOWNLOAD_URL="https://dl.bintray.com/boostorg/release/${BOOST_VERSION_ENTIRE}/source/${BOOST_ARCHIVE_FILE_NAME}"
-export CGAL_DOWNLOAD_URL="https://github.com/CGAL/cgal/archive/${CGAL_ARCHIVE_FILE_NAME}"
+
+if [ $CGAL_VERSION_MAJOR -le 4 ] ; then
+    # https://github.com/CGAL/cgal/archive/releases/CGAL-4.12.2.tar.gz
+    export CGAL_ARCHIVE_FILE_NAME="CGAL-${CGAL_VERSION_ENTIRE}.tar.gz"
+    export CGAL_DOWNLOAD_URL="https://github.com/CGAL/cgal/archive/releases/${CGAL_ARCHIVE_FILE_NAME}"
+else
+    # https://github.com/CGAL/cgal/archive/v5.2.tar.gz
+    export CGAL_ARCHIVE_FILE_NAME="v${CGAL_VERSION_ENTIRE}.tar.gz"
+    export CGAL_DOWNLOAD_URL="https://github.com/CGAL/cgal/archive/${CGAL_ARCHIVE_FILE_NAME}"
+fi
 
 echo "export BOOST_VERSION_ENTIRE=${BOOST_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
 echo "export CGAL_VERSION_ENTIRE=${CGAL_VERSION_ENTIRE}" >> /etc/profile.d/buildenv.sh
+echo "export CGAL_VERSION_MAJOR=${CGAL_VERSION_MAJOR}" >> /etc/profile.d/buildenv.sh
 echo "export BOOST_ARCHIVE_FILE_NAME=${BOOST_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
 echo "export CGAL_ARCHIVE_FILE_NAME=${CGAL_ARCHIVE_FILE_NAME}" >> /etc/profile.d/buildenv.sh
 echo "export BOOST_DOWNLOAD_URL=${BOOST_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
 echo "export CGAL_DOWNLOAD_URL=${CGAL_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.sh
 
-#cd $OPENFOAM_THIRDPARTY_DIR
+cd $OPENFOAM_THIRDPARTY_DIR
+wget -q ${BOOST_DOWNLOAD_URL}
+tar -xzvf ${BOOST_ARCHIVE_FILE_NAME}
+rm -f ${BOOST_ARCHIVE_FILE_NAME}
 
-#wget -q ${BOOST_DOWNLOAD_URL}
-#tar -xzvf ${BOOST_ARCHIVE_FILE_NAME}
-#rm -f ${BOOST_ARCHIVE_FILE_NAME}
+wget -q ${CGAL_DOWNLOAD_URL}
+tar -xzvf ${CGAL_ARCHIVE_FILE_NAME}
+rm -f ${CGAL_ARCHIVE_FILE_NAME}
 
-#wget -q ${CGAL_DOWNLOAD_URL}
-#tar -xzvf ${CGAL_ARCHIVE_FILE_NAME}
-#rm -f ${CGAL_ARCHIVE_FILE_NAME}
+if [ $CGAL_VERSION_MAJOR -le 4 ] ; then
+    mv *CGAL-$CGAL_VERSION_ENTIRE CGAL-$CGAL_VERSION_ENTIRE
+fi
 
 # ------------------------------------------------------------------------------
 #
@@ -160,10 +214,6 @@ echo "export CGAL_DOWNLOAD_URL=${CGAL_DOWNLOAD_URL}" >> /etc/profile.d/buildenv.
 
 #
 cd ${OPENFOAM_THIRDPARTY_DIR}
-./makeFFTW
-./makeSCOTCH
-./makeAdios2
-./makeKAHIP
 ./Allwmake
 #./makePETSC
 

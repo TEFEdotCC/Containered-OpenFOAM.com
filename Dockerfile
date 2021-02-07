@@ -39,10 +39,8 @@ RUN dnf update -y && dnf upgrade -y                                             
       python python3 python3-pip                                                            \
       boost-openmpi-python3-devel boost-python3-devel python3-devel                         \
       python3-numpy python3-scipy python3-matplotlib python3-pandas python3-sympy           \
-      CGAL-devel fftw-devel                                                                 \
       eigen3-devel libxml2-devel                                                            \
       scons valgrind-devel blas-devel openblas-devel gcc-gfortran                           \
-      metis-devel scotch scotch-devel                                                       \
       ptscotch-openmpi ptscotch-openmpi-devel ptscotch-openmpi-devel-parmetis               \
       petsc petsc-devel petsc-openmpi petsc-openmpi-devel                                   \
  && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*

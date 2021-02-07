@@ -43,6 +43,7 @@ RUN dnf update -y && dnf upgrade -y                                             
       scons valgrind-devel blas-devel openblas-devel gcc-gfortran                           \
       ptscotch-openmpi ptscotch-openmpi-devel ptscotch-openmpi-devel-parmetis               \
       petsc petsc-devel petsc-openmpi petsc-openmpi-devel                                   \
+      gmp gmp-devel gmp-ecm gmp-ecm-devel gmp-static                                        \
  && dnf clean all && rm -rf /usr/share/man/* /tmp/* /var/cache/dnf/*
 
 ENV TZ=Europe/Berlin

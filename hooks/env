@@ -10,10 +10,16 @@ export OPENFOAM_GIT_URL="${OPENFOAM_GIT_BASE_URL}/openfoam.git"
 export OPENFOAM_THIRDPARTY_GIT_URL="${OPENFOAM_GIT_BASE_URL}/ThirdParty-common.git"
 
 # get openfoam version from repository
-export OPENFOAM_MASTER_VERSION=$(                                       \
-    curl -s "${OPENFOAM_GIT_BASE_URL}/openfoam/-/raw/master/etc/bashrc" \
-  | grep "export WM_PROJECT_VERSION=" |                                 \
-    awk -F"=" '{print $2}'                                              \
+export OPENFOAM_MASTER_VERSION=$(                                                 \
+    curl -s "${OPENFOAM_GIT_BASE_URL}/openfoam/-/raw/master/etc/bashrc"           \
+  | grep "export WM_PROJECT_VERSION=" |                                           \
+    awk -F"=" '{print $2}'                                                        \
+)
+
+export OPENFOAM_VERSION_ENTIRE=$(                                                 \
+    curl -s "${OPENFOAM_GIT_BASE_URL}/openfoam/-/raw/${SOURCE_BRANCH}/etc/bashrc" \
+  | grep "export WM_PROJECT_VERSION=" |                                           \
+    awk -F"=" '{print $2}'                                                        \
 )
 
 #
@@ -21,7 +27,6 @@ if [ "$SOURCE_BRANCH" = "master" ] || [ "$SOURCE_BRANCH" = "develop" ]; then
   #
   # branch : develop
   #   mostly stable branch for next release.
-  export OPENFOAM_VERSION_ENTIRE="develop"
   export OPENFOAM_GIT_BRANCH="develop"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="develop"
   export IMAGE_VERSION="dev"
@@ -30,7 +35,6 @@ elif [ $(git ls-remote --heads $OPENFOAM_GIT_URL "maintenance-$SOURCE_BRANCH" | 
   #
   # branch : maintenance-...
   #   previous releases with bug fixes
-  export OPENFOAM_VERSION_ENTIRE="$SOURCE_BRANCH"
   export IMAGE_VERSION="$OPENFOAM_VERSION_ENTIRE"
   export OPENFOAM_GIT_BRANCH="maintenance-$OPENFOAM_VERSION_ENTIRE"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="$OPENFOAM_VERSION_ENTIRE"
@@ -39,7 +43,6 @@ elif [ $(git ls-remote $OPENFOAM_GIT_URL "OpenFOAM-$OPENFOAM_MASTER_VERSION" | w
   #
   # branch : master
   #   last release with bug fixes, should be mostly stable
-  export OPENFOAM_VERSION_ENTIRE="$OPENFOAM_MASTER_VERSION"
   export OPENFOAM_GIT_BRANCH="master"
   export OPENFOAM_THIRDPARTY_GIT_BRANCH="main"
   export IMAGE_VERSION="$OPENFOAM_VERSION_ENTIRE"
